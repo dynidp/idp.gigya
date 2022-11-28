@@ -58,6 +58,12 @@ export function loadGigyaForApiKey(apiKey) {
         "https://cdns.gigya.com/js/gigya.js?apikey=" + apiKey
     );
     document.body.appendChild(newScript);
+    var oidScript = document.createElement("script");
+    oidScript.setAttribute(
+        "src",
+        "https://cdns.gigya.com/js/gigya.oidc.js?apikey=" + apiKey
+    );
+    document.body.appendChild(oidScript);
 
     // Check if loaded properly, if don't, delete the localstorage param and reload the page again
     setTimeout(checkIfGigyaLoaded, 1500);
