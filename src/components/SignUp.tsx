@@ -16,6 +16,7 @@ import {useSelector} from "@xstate/react";
 import {AnyState} from "xstate";
 import {AuthService} from "../machines/authMachine";
 import {ErrorOutlined} from "@mui/icons-material";
+import {RouteProps} from "../routes/PrivateRoute";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -51,7 +52,7 @@ export interface SignUpProps extends RouteComponentProps {
 const errorSelector = (state: AnyState) => state?.context;
 
 const loginServiceSelector = (state: any) => state.context;
-export default function SignUp({authService}: SignUpProps) {
+export default function SignUp({authService}: RouteProps) {
     const classes = useStyles();
     const {register, handleSubmit, formState: {errors}, setError} = useForm();
     const {message} = useSelector(authService, loginServiceSelector);
