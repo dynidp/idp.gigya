@@ -98,7 +98,7 @@ function clearCustomApiKey() {
  * Check if loaded properly, if don't, delete the localstorage param and reload the page again
  */
 export function checkIfGigyaLoaded() {
-    if (typeof window.gigya === "undefined" || window.gigya.isReady === false) {
+    if (typeof window.gigya === "undefined") {
         // Clear wrong api key
         const apiKeyFromLocalStorage = getFromLocalStorage("reload-with-apikey");
         if (
@@ -116,8 +116,12 @@ export function checkIfGigyaLoaded() {
             );
             clearCustomApiKey();
         }
+        return false;
     }
+    return true;
+
 }
+
 
 /**
  * Validates (Via backend) the incoming API Key. If the backend call is broken, it degrades to a valid API Key, that it will fail later when it's tried to be loaded.

@@ -5,6 +5,7 @@ const {log} = actions;
 
 export interface AuthMachineSchema {
     states: {
+        loading:{};
         history: {};
         unauthorized: {};
         login: {};
@@ -26,6 +27,7 @@ export interface SocialPayload {
 export type SocialEvent = SocialPayload & { type: "SOCIAL" };
 export type AuthMachineEvents =
     | { type: "LOGIN" }
+    | { type: "LOADED" , [key:string]: any}
     | SocialEvent
     | { type: "LOGOUT" }
     | { type: "UPDATE" }
@@ -54,7 +56,7 @@ export interface AuthMachineContext {
 export const authMachine = Machine<AuthMachineContext, AuthMachineSchema, AuthMachineEvents>(
     {
         id: 'auth',
-        initial: "refreshing",
+        initial: "loading",
         context: {  },
       
       
@@ -63,7 +65,23 @@ export const authMachine = Machine<AuthMachineContext, AuthMachineSchema, AuthMa
                 type: 'history',
                 history: 'deep' // optional; default is 'shallow'
             },
- 
+            loading: {
+                invoke: {
+                    id: "loader",
+                    src: 'loader',
+                    onDone: [{
+                        target: "refreshing",
+                        actions: ['onLoaded'],
+                    }]
+                },
+                on: {
+                    LOADED: {
+                        target: "refreshing",  actions: ['onLoaded'],
+                    }
+                }
+            },
+
+
             unauthorized: {
                 entry: ["resetUser", "onUnauthorizedEntry", log('unauthorized')],
                 on: {
@@ -266,7 +284,7 @@ export const authMachine = Machine<AuthMachineContext, AuthMachineSchema, AuthMa
                 invoke: [{
                     src: "getToken",
                     onDone: {target: "authorized", actions: "setToken"},
-                    onError: {target: "unauthorized", actions: ["onError", "logEventData"]},
+                    onError: {target: "unauthorized", actions: [ "logEventData"]},
                 }
                 ]
 

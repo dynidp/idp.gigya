@@ -10,6 +10,8 @@ import {
 import {omit} from "lodash/fp";
 import {AuthMachine} from "./authMachine";
 import gigyaWebSDK from "../gigya/gigyaWebSDK";
+import {loader} from "../gigya/gigyaLoadMachine";
+import { assign } from "xstate";
 
 function toMfa(tokenDetails: any) {
     return {
@@ -25,6 +27,8 @@ export const withGigya= (authMachine:AuthMachine, config:{redirectTo:(uri:string
     })
     .withConfig({
     services: {
+        loader: (context, event) => loader,
+
         performSignup: async (ctx, event) => {
             const payload = omit("type", event);
             return await performSignup(payload)
@@ -109,8 +113,9 @@ export const withGigya= (authMachine:AuthMachine, config:{redirectTo:(uri:string
         })*/
     },
     actions: {
-      
-        
+       
+
+
         /*onAuthorizedEntry: async (ctx, event) => {
             const url =  gigyaWebSDK().utils.URL.addParamsToURL("",{
                 mode: 'afterLogin',

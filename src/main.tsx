@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import './gigya/main';
+// import './gigya/main';
 import App from './App';
 import {createRoot} from 'react-dom/client';
 import {Router} from "@reach/router";

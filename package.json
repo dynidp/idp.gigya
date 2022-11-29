@@ -20,6 +20,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "latest",
     "react-json-view": "^1.21.3",
+    "rxjs": "^7.5.7",
     "xstate": "latest"
   },
   "scripts": {

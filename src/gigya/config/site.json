@@ -1,0 +1,16 @@
+{
+    "menu_description": "CDC IDP",
+    "site_title": "SAP Customer Data Cloud IDP Starter",
+    "site_description": "Sample Site with basic Customer Data Cloud IDP capabilities",
+    "menu_bg_color": "white",
+    "menu_bg_color_hover": "#1d87ff2a",
+    "menu_text_color": "#999",
+    "text_color": "#7a7a7a",
+    "background_color": "#f4f4f4",
+    "menu_pic": "sap.png",
+    "main_url": "/",
+    "main_pic": "sap.png",
+    "raas_prefix": "Default",
+    "lang": "en",
+    "apiKey": "4_IIUXxExoyzTQFvliBbnXsA"
+}
