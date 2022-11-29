@@ -16,6 +16,7 @@ import {useSelector} from "@xstate/react";
 import {AuthService} from "../machines/authMachine";
 import {ErrorOutlined} from "@mui/icons-material";
 import {Google, WindowTwoTone} from "@mui/icons-material";
+import {RouteProps} from "../routes/PrivateRoute";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -45,8 +46,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export interface SignInProps extends RouteComponentProps {
-    authService: AuthService;
+export interface SignInProps extends RouteProps {
 }
 
 const loginServiceSelector = (state: any) => state.context;

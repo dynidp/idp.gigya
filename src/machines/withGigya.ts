@@ -17,7 +17,12 @@ function toMfa(tokenDetails: any) {
     } 
 }
 
-export const withGigya= (authMachine:AuthMachine)=>authMachine.withConfig({
+export const withGigya= (authMachine:AuthMachine, config:{ navigate: (path:string)=>{}, location: {pathname:string}})=>authMachine
+    .withContext({
+        ...authMachine.context,
+        ...config
+    })
+    .withConfig({
     services: {
         performSignup: async (ctx, event) => {
             const payload = omit("type", event);
@@ -133,17 +138,12 @@ export const withGigya= (authMachine:AuthMachine)=>authMachine.withConfig({
         //         history.push("/signin");
         //     }
         // },
-        // onAuthorizedEntry: async (ctx, event) => {
-        //     if (history.location.pathname === "/signin") {
-        //         /* istanbul ignore next */
-        //         history.push("/");
-        //     } else {
-        //         history.push(
-        //             `/profile`
-        //         );
-        //     }
-        //
-        // },
+        onAuthorizedEntry: async (ctx, event) => {
+                ctx.navigate("/?mode=afterLogin");
+            
+            //
+            // },
+        }
     }
 });
 

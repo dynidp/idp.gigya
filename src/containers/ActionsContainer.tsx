@@ -20,6 +20,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import {AuthService} from "../machines/authMachine";
 import {useActor} from "@xstate/react";
 import {EventObject, Sender} from "xstate/lib/types";
+import {NotificationsService} from "../machines/notificationsMachine";
 
 
 declare module '@mui/styles/defaultTheme' {
@@ -46,11 +47,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export interface Props {
+export interface PropsWithServices {
     authService: AuthService;
+    notificationsService: NotificationsService
 }
 
-const EventsContainer: React.FC<Props> = ({authService}) => {
+const EventsContainer: React.FC<PropsWithServices> = ({authService, notificationsService}) => {
     const classes = useStyles();
     const [authState] = useActor(authService);
 

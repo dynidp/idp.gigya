@@ -6,6 +6,7 @@ import {AnyState} from "xstate";
 import {Box} from "@mui/material";
 import SessionInfo from "../components/Session";
 import Profile from "../components/Profile";
+import {RouteProps} from "../routes/PrivateRoute";
 
 const useStyles = makeStyles((theme) => ({
     box: {
@@ -51,8 +52,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export interface ProfileProps extends RouteComponentProps {
-    authService: AuthService;
+export interface ProfileProps extends RouteProps {
 
 }
 

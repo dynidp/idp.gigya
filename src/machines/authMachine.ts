@@ -46,7 +46,8 @@ export interface AuthMachineContext {
     idToken?: IdToken;
     token?: Token;
     mfaToken?: any;
-    message?: string; 
+    message?: string;
+    [key:string]: any;
 }
 
 
@@ -54,13 +55,7 @@ export const authMachine = Machine<AuthMachineContext, AuthMachineSchema, AuthMa
     {
         id: 'auth',
         initial: "unauthorized",
-        context: {
-            user: undefined,
-            idToken: undefined,
-            token: undefined,
-            message: undefined 
-
-        },
+        context: {  },
       
       
         states: {

@@ -18,6 +18,7 @@
 /** *****************************************************/
 
 import {log,getFromLocalStorage, setInLocalStorage} from "./utils";
+import SignInOidc from "../components/SignInOidc";
 const query = document.querySelector.bind(document);
 const queryAll = document.querySelectorAll.bind(document);
 
@@ -61,8 +62,16 @@ export function loadGigyaForApiKey(apiKey) {
     var oidScript = document.createElement("script");
     oidScript.setAttribute(
         "src",
-        "https://cdns.gigya.com/js/gigya.oidc.js?apikey=" + apiKey
+        "https://cdns.gigya.com/js/gigya.oidc.js?apiKey=" + apiKey
     );
+    oidScript.insertAdjacentHTML("beforeend", `{
+        'loginURL':'/#signin',
+        'consentURL':'/#consent',
+        'errorURL':'/#errorURL'
+        
+    }`);
+    oidScript.setAttribute('consentURL', '/#consent');
+    oidScript.setAttribute('errorURL', '/#error');
     document.body.appendChild(oidScript);
 
     // Check if loaded properly, if don't, delete the localstorage param and reload the page again

@@ -4,8 +4,10 @@ import { useActor } from "@xstate/react";
 import {LoginRoute} from "./LoginRoute";
 import {AuthService} from "../machines/authMachine";
 import { RouteComponentProps } from "@reach/router";
-export interface Props extends RouteComponentProps {
-    authService: AuthService;
+import {PropsWithServices} from "../containers/ActionsContainer";
+
+export type RouteProps =RouteComponentProps & PropsWithServices;
+export interface Props extends RouteProps {
     as: any;
 
 
@@ -20,13 +22,13 @@ export function PrivateRoute({authService, as: Comp, ...props}: Props) {
 
     switch (true) {
         case state == undefined:
-            return <LoginRoute authService={authService}/>;
+            return <LoginRoute  {...props} authService={authService}/>;
 
         case state.matches('login'):
-            return <LoginRoute authService={authService}/>
+            return <LoginRoute  {...props} authService={authService}/>
 
         case state.matches('reauth'):
-            return <SignIn authService={authService}/>
+            return <SignIn  {...props} authService={authService}/>
         default:
             return <Comp {...props} authService={authService}/>;
     }
