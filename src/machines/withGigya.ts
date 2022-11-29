@@ -110,16 +110,17 @@ export const withGigya= (authMachine:AuthMachine, config:{redirectTo:(uri:string
     },
     actions: {
       
-        onAuthorizedEntry: async (ctx, event) => {
+        
+        /*onAuthorizedEntry: async (ctx, event) => {
             const url =  gigyaWebSDK().utils.URL.addParamsToURL("",{
                 mode: 'afterLogin',
                 gig_skipConsent: true
             });
-                ctx.redirectTo(url);
+                ctx.navigate(url,{replace:true});
             
             //
             // },
-        }
+        }*/
     }
 });
 
