@@ -112,7 +112,8 @@ export const withGigya= (authMachine:AuthMachine, config:{redirectTo:(uri:string
       
         onAuthorizedEntry: async (ctx, event) => {
             const url =  gigyaWebSDK().utils.URL.addParamsToURL("",{
-                mode: 'afterLogin'
+                mode: 'afterLogin',
+                gig_skipConsent: true
             });
                 ctx.redirectTo(url);
             
