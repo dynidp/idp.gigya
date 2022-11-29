@@ -9,6 +9,7 @@ import {
 } from "../gigya/gigyaAuthMachine";
 import {omit} from "lodash/fp";
 import {AuthMachine} from "./authMachine";
+import gigyaWebSDK from "../gigya/gigyaWebSDK";
 
 function toMfa(tokenDetails: any) {
     return {
@@ -17,7 +18,7 @@ function toMfa(tokenDetails: any) {
     } 
 }
 
-export const withGigya= (authMachine:AuthMachine, config:{ navigate: (path:string)=>{}, location: {pathname:string}})=>authMachine
+export const withGigya= (authMachine:AuthMachine, config:{redirectTo:(uri:string)=>void, navigate: (path:string)=>{}, location: {pathname:string}})=>authMachine
     .withContext({
         ...authMachine.context,
         ...config
@@ -108,38 +109,12 @@ export const withGigya= (authMachine:AuthMachine, config:{ navigate: (path:strin
         })*/
     },
     actions: {
-        // assignLoginService:assign({
-        //     loginService:(context) => spawn(loginMachine.withConfig({
-        //         services:{
-        //             performSignup: async (ctx, event) => {
-        //                 const payload = omit("type", event);
-        //                 return await performSignup(payload)
-        //             },
-        //             performLogin: async (ctx, event) => {
-        //                 const payload = omit("type", event);
-        //                 const loginMode =ctx.user? "reAuth" : "standard"
-        //                 return await performSignin({...payload, loginMode})
-        //             },
-        //             performSocialLogin: async (ctx, event) => {
-        //                 if (event.type == "SOCIAL") {
-        //                     const payload = omit("type", event);
-        //                     const loginMode =ctx.user? "reAuth" :  "standard"
-        //
-        //                     return await  socialLoginAsync({...payload, loginMode} as SocialLoginParams);
-        //                 }
-        //
-        //             },
-        //         }
-        //     }))
-        // })
-        // onUnauthorizedEntry: async (ctx, event) => {
-        //     if (history.location.pathname !== "/signin") {
-        //         /* istanbul ignore next */
-        //         history.push("/signin");
-        //     }
-        // },
+      
         onAuthorizedEntry: async (ctx, event) => {
-                ctx.navigate("/?mode=afterLogin");
+            const url =  gigyaWebSDK().utils.URL.addParamsToURL("",{
+                mode: 'afterLogin'
+            });
+                ctx.redirectTo(url);
             
             //
             // },
