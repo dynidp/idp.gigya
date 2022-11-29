@@ -54,7 +54,7 @@ export interface AuthMachineContext {
 export const authMachine = Machine<AuthMachineContext, AuthMachineSchema, AuthMachineEvents>(
     {
         id: 'auth',
-        initial: "unauthorized",
+        initial: "refreshing",
         context: {  },
       
       
@@ -63,13 +63,18 @@ export const authMachine = Machine<AuthMachineContext, AuthMachineSchema, AuthMa
                 type: 'history',
                 history: 'deep' // optional; default is 'shallow'
             },
-
+ 
             unauthorized: {
                 entry: ["resetUser", "onUnauthorizedEntry", log('unauthorized')],
                 on: {
                     LOGIN: "login.initial",
                     SIGNUP: "login.signup"
                 },
+                after: {
+                    // after 1 second, transition to yellow
+                    1000: { target: 'refreshing' }
+                }
+
             },
             login: {
                 entry: ['onLoginEntry', 'assignLoginService', log('login')],
