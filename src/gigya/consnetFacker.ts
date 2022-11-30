@@ -23,7 +23,7 @@ const SigUtils = {
 async function importKey(secret:string) {
     return await crypto.subtle.importKey(
         'raw',
-        Buffer.from(secret, 'base64'),
+        new TextEncoder().encode(secret),
         { name: 'HMAC', hash: 'SHA-1' },
         false,
         ['sign', 'verify'],
