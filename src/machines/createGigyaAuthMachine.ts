@@ -148,12 +148,13 @@ export const createGigyaAuthMachine = ( config: { redirectTo: (uri: string) => v
 async function continueOIDC(ctx:{application:Application, user:UIDParams, location:{search:string, hash:string}}, event:any) {
 
     const {location, user} = ctx;
-    const context = gigyaWebSDK().getUrlParam('context');
-    if(!context || !user){
+    const params =getParams(location);
+    const {context, mode} = params;
+    if(!context || !user || mode =='error'){
         return;
     }
     const loginToken = gigyaWebSDK()._.apiAdapters.web.tokenStore.get();
-    const consent = await getFakeConsent({...ctx, params:getParams(location)});
+    const consent = await getFakeConsent({...ctx, params:params});
     gigyaWebSDK().fidm.oidc.op.redirectToContinue({
         opKey: gigyaWebSDK().apiKey,
         ...consent,
