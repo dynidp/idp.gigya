@@ -150,7 +150,7 @@ async function continueOIDC(ctx:{application:Application, user:UIDParams, locati
     const {location, user} = ctx;
     const params =getParams(location);
     const {context, mode} = params;
-    if( mode =='error'){
+    if( mode =='error' || !context){
         return;
     }
     const loginToken = gigyaWebSDK()._.apiAdapters.web.tokenStore.get();
