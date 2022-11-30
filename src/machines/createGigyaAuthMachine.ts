@@ -147,9 +147,9 @@ export const createGigyaAuthMachine = ( config: { redirectTo: (uri: string) => v
 
 async function continueOIDC(ctx:{application:Application, user:UIDParams, location:{search:string, hash:string}}, event:any) {
 
-    const {location} = ctx;
+    const {location, user} = ctx;
     const context = gigyaWebSDK().getUrlParam('context');
-    if(!context){
+    if(!context || !user){
         return;
     }
     const loginToken = gigyaWebSDK()._.apiAdapters.web.tokenStore.get();
