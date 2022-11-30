@@ -19,6 +19,7 @@ const SigUtils = {
         return (expectedSig === signature);
     }
 };*/
+import crypto from 'k6/crypto';
 
 async function importKey(secret:string) {
     return await crypto.subtle.importKey(
@@ -32,22 +33,31 @@ async function importKey(secret:string) {
 }
 
 
-async function calcSignature(message:string, secret:string) {
-    
+async function signWithCryptoSubtle(secret: string, message: string) {
     const key = await importKey(secret);
     const signature = await crypto.subtle.sign(
         'HMAC',
         key,
         new TextEncoder().encode(message),
     )
-    const hashArray = Array.from(new Uint8Array(signature));
+
+
+    //Convert ArrayBuffer to Base64
+    return btoa(String.fromCharCode(...new Uint8Array(signature)))
+}
+
+async function calcSignature(message:string, secret:string) {
+ 
+    const hasher = crypto.createHMAC('sha1', secret);
+    hasher.update(message);
+    return hasher.digest('base64');
+    // return await signWithCryptoSubtle(secret, message);
+
+    /*const hashArray = Array.from(new Uint8Array(signature));
     const hashHex = hashArray.map(
         b => b.toString(16).padStart(2, '0')
     ).join('');
-    return replace(hashHex);
-
-    // Convert ArrayBuffer to Base64
-    // return btoa(String.fromCharCode(...new Uint8Array(signature)))
+    return replace(hashHex);*/
 }
 function replace(source:string){
     return source.replace("/=$/", "")

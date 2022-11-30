@@ -16,6 +16,8 @@
     "@types/react-dom": "^18.0.6",
     "@xstate/react": "latest",
     "axios": "latest",
+    "create-hmac": "^1.1.7",
+    "k6": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "latest",
