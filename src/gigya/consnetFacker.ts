@@ -22,6 +22,7 @@ const SigUtils = {
 
 async function importKey(secret:string) {
     return await crypto.subtle.importKey(
+        
         'raw',
         new TextEncoder().encode(secret),
         { name: 'HMAC', hash: 'SHA-1' },
@@ -33,18 +34,29 @@ async function importKey(secret:string) {
 
 async function calcSignature(message:string, secret:string) {
     
-    const key = await importKey(secret)
+    const key = await importKey(secret);
     const signature = await crypto.subtle.sign(
         'HMAC',
         key,
         new TextEncoder().encode(message),
     )
+    const hashArray = Array.from(new Uint8Array(signature));
+    const hashHex = hashArray.map(
+        b => b.toString(16).padStart(2, '0')
+    ).join('');
+    return replace(hashHex);
 
     // Convert ArrayBuffer to Base64
-    return btoa(String.fromCharCode(...new Uint8Array(signature)))
+    // return btoa(String.fromCharCode(...new Uint8Array(signature)))
+}
+function replace(source:string){
+    return source.replace("/=$/", "")
+    .replace("/=$/", "" )
+    .replace("/[+]/", "-" )
+    .replace("/\//", "_");
+
 }
 
- 
 
 async function calcSig(dataObj:{[key:string]: any}, application: Application) {
 return calcSignature(JSON.stringify(dataObj), application.secret);
