@@ -19,13 +19,13 @@ const SigUtils = {
         return (expectedSig === signature);
     }
 };*/
-import crypto from 'k6/crypto';
+// import createHmac from "create-hmac";
 
 async function importKey(secret:string) {
     return await crypto.subtle.importKey(
         
         'raw',
-        new TextEncoder().encode(secret),
+        Buffer.from(secret),
         { name: 'HMAC', hash: 'SHA-1' },
         false,
         ['sign', 'verify'],
@@ -46,19 +46,36 @@ async function signWithCryptoSubtle(secret: string, message: string) {
     return btoa(String.fromCharCode(...new Uint8Array(signature)))
 }
 
+const getUtf8Bytes = (str:string) =>
+    new Uint8Array(
+        [...unescape(encodeURIComponent(str))].map(c => c.charCodeAt(0))
+    );
+
+
+
 async function calcSignature(message:string, secret:string) {
+    const secretBytes = getUtf8Bytes(secret);
+    const messageBytes = getUtf8Bytes(message);
+
+    const cryptoKey = await crypto.subtle.importKey(
+        'raw', secretBytes, { name: 'HMAC', hash: 'SHA-1' },
+        true, ['sign']
+    );
+    const sig = await crypto.subtle.sign('HMAC', cryptoKey, messageBytes);
+
+// to lowercase hexits
+    [...new Uint8Array(sig)].map(b => b.toString(16).padStart(2, '0')).join('');
+
+// to base64
+    btoa(String.fromCharCode(...new Uint8Array(sig)));
+
+}
+/*async function calcSignature_(message:string, secret:string) {
  
-    const hasher = crypto.createHMAC('sha1', secret);
+    const hasher = createHmac('sha1', Buffer.from(secret));
     hasher.update(message);
     return hasher.digest('base64');
-    // return await signWithCryptoSubtle(secret, message);
-
-    /*const hashArray = Array.from(new Uint8Array(signature));
-    const hashHex = hashArray.map(
-        b => b.toString(16).padStart(2, '0')
-    ).join('');
-    return replace(hashHex);*/
-}
+ }*/
 function replace(source:string){
     return source.replace("/=$/", "")
     .replace("/=$/", "" )

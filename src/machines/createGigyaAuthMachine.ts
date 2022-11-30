@@ -150,11 +150,12 @@ async function continueOIDC(ctx:{application:Application, user:UIDParams, locati
     const {location, user} = ctx;
     const params =getParams(location);
     const {context, mode} = params;
-    if(!context || !user || mode =='error'){
+    if( mode =='error'){
         return;
     }
     const loginToken = gigyaWebSDK()._.apiAdapters.web.tokenStore.get();
     const consent = await getFakeConsent({...ctx, params:params});
+    console.log(consent);
     gigyaWebSDK().fidm.oidc.op.redirectToContinue({
         opKey: gigyaWebSDK().apiKey,
         ...consent,
@@ -180,23 +181,7 @@ export function getParams({search, hash}:{search:string, hash:string}):Context {
         callID: result.get('callId'),
         skipConsent: result.get('gig_skipConsent') || false
     }
-
-   /* export function urlParams(query:string) {
-        if (query.indexOf('?') > -1)
-            query = query.substring(query.indexOf('?') + 1);
-        const queryParts = query.split(/&/);
-        const params = {};
-        for (let i = 0; i < queryParts.length; ++i) {
-            const param = queryParts[i];
-            if (param.indexOf('=') === -1)
-                continue;
-            const paramParts = param.split('=');
-            if (paramParts.length !== 2)
-                continue;
-            params[paramParts[0]] = decodeURIComponent(paramParts[1]);
-        }
-        return params;
-    }*/
+ 
 
 }
 

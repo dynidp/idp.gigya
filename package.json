@@ -16,6 +16,7 @@
     "@types/react-dom": "^18.0.6",
     "@xstate/react": "latest",
     "axios": "latest",
+    "buffer": "^6.0.3",
     "create-hmac": "^1.1.7",
     "k6": "latest",
     "react": "^18.2.0",
@@ -51,8 +52,10 @@
     ]
   },
   "devDependencies": {
+    "@types/create-hmac": "^1.1.0",
     "@types/jest": "^28.1.4",
     "@types/lodash": "^4.14.188",
+    "@types/node": "^10.9.2",
     "@types/reach__router": "latest",
     "@typescript-eslint/eslint-plugin": "^5.30.5",
     "@typescript-eslint/parser": "^5.30.5",
