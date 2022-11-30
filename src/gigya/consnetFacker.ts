@@ -23,7 +23,7 @@ const SigUtils = {
 async function importKey(secret:string) {
     return await crypto.subtle.importKey(
         'raw',
-        new TextEncoder().encode(secret),
+        Buffer.from(secret, 'base64'),
         { name: 'HMAC', hash: 'SHA-1' },
         false,
         ['sign', 'verify'],
@@ -53,6 +53,7 @@ return calcSignature(JSON.stringify(dataObj), application.secret);
 export async function getFakeConsent({ application, user , params}: { application: Application; user: UIDParams, params:Context}) {
     // $scope = preg_replace('/[+]/', ' ', $scope); // Important: scope string must contain white-space spaces, not '+' or '%2b' or sig validation will fail.
     const consentObj = {
+        clientID: params.clientID,
         scope: params.scope,
         context: params.context,
         UID: user.UID,
