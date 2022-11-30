@@ -67,7 +67,7 @@ async function calcSignature(message:string, secret:string) {
     [...new Uint8Array(sig)].map(b => b.toString(16).padStart(2, '0')).join('');
 
 // to base64
-    btoa(String.fromCharCode(...new Uint8Array(sig)));
+    replace(btoa(String.fromCharCode(...new Uint8Array(sig))));
 
 }
 /*async function calcSignature_(message:string, secret:string) {
