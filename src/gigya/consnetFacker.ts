@@ -59,12 +59,14 @@ export async function getFakeConsent({ application, user , params}: { applicatio
         consent:true
 
     };
+    
+    const consent=JSON.stringify(consentObj);
 
     return {
-        consentObj,
+        consent,
         uidSignature: user.UIDSignature,
         signatureTimestamp: user.signatureTimestamp,
-        signature: await calcSig(consentObj, application),
+        signature: await calcSignature(consent, application.secret),
         userKey: application.key
     }
 
