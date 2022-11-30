@@ -5,14 +5,15 @@ import {RouteComponentProps } from "@reach/router";
 import { navigate, redirectTo } from "@reach/router"
 import { InterpreterFrom } from "xstate";
 import {useInterpretWithLocalStorage} from "../machines/withLocalStorage";
-import {withGigya} from "../machines/withGigya";
+import {createGigyaAuthMachine} from "../machines/createGigyaAuthMachine";
 
-export const AuthContext = createContext<InterpreterFrom<AuthMachine>>({} as InterpreterFrom<AuthMachine>);
+declare type GigyaAuthService=InterpreterFrom<typeof createGigyaAuthMachine>;
+export const AuthContext = createContext<GigyaAuthService>({} as GigyaAuthService);
 export type AuthProviderProps = RouteComponentProps
 
 function OAuthProvider({ children}:React.PropsWithChildren) {
 
-    const authService = useInterpret(() => withGigya(authMachine, {redirectTo,navigate, location }));
+    const authService = useInterpret(() => createGigyaAuthMachine( {redirectTo,navigate, location }));
  
     return  <AuthContext.Provider value={authService}>
         {children}

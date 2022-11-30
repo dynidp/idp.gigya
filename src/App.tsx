@@ -10,7 +10,6 @@ import {AnyState} from "xstate";
 import {Box, Container} from "@mui/material";
 import {SnackbarContext, snackbarMachine} from "./machines/snackbarMachine";
 import AlertBar from "./components/AlertBar";
-import {withGigya} from "./machines/withGigya";
 import {notificationMachine} from "./machines/notificationsMachine";
 import NotificationsContainer from "./containers/NotificationsContainer";
 import ProfileContainer from "./containers/ProfileContainer";
