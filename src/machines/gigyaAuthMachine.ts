@@ -160,18 +160,18 @@ async function continueOIDC(ctx: { service: GigyaSdk, application: Application, 
     const loginToken = gigyaWebSDK()._.apiAdapters.web.tokenStore.get();
     const consent = await getFakeConsent({...ctx, params: params});
     console.log(consent);
-    await redirectToContinue({
+    await gigyaWebSDK().fidm.oidc.op.redirectToContinue({
         opKey: gigyaWebSDK().apiKey,
         ...consent,
         context,
         login_token: loginToken
     });
 
-    async function redirectToContinue(params: any) {
+ /*   async function redirectToContinue(params: any) {
         redirectToContinueEndPoint('authorize/continue', {
             context: context,
             login_token: params.login_token,
-            ...params.consent,
+            ...consent,
             gmidTicket: await gigyaWebSDK()._.apiAdapter.getGmidTicket()
         }, params.opKey);
     }
@@ -179,7 +179,7 @@ async function continueOIDC(ctx: { service: GigyaSdk, application: Application, 
     function redirectToContinueEndPoint(endPoint: string, params: AnyRecord, apiKey: string) {
         const url = gigyaWebSDK().utils.URL.addParamsToURL(`https://${domain || gigyaWebSDK()._.getApiDomain('fidm')}/oidc/op/v1.0/${apiKey}/${endPoint}`, params);
         redirectTo(url);
-    }
+    }*/
 
 }
 
