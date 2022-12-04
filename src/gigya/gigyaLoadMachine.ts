@@ -18,6 +18,7 @@ declare global {
 
 }
 export declare type GigyaSdk = (typeof gigya & {
+    config: GigyaConfig,
     loaded: true
 } & typeof window.gigya) | { loaded: false };
 
