@@ -165,7 +165,7 @@ export function loadFromConfig(config) {
     window.config = config;
     // debugger;
     log("3. Load Gigya for api key: " + apiKey, "LOAD GIGYA FILE");
-    return loadScript(apiKey, config.domain);
+    return loadScript(apiKey, config.domain || new URLSearchParams(location.search).domain);
 }
 
 function loadScript(apiKey, domain) {
