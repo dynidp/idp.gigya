@@ -5,7 +5,7 @@ import { createModel } from "xstate/lib/model";
 import { interpret } from "xstate";
 import { Subject } from "rxjs";
 import {UserInfo} from "./models";
-import * as gigya from "./gigyaAuthMachine";
+import * as gigya from "./gigyaWebSDK";
 declare type GigyaConfig = object &{app?:string};
 declare global {
 
@@ -28,7 +28,8 @@ export const gigyaModel = createModel(
     },
     {
         events: {
-            CHECK: (wait?: number) => ({wait}),
+            NOT_LOADED: (wait?: number) => ({wait}),
+            CHECK:(wait?: number) => ({wait}),
             LOAD: (config: GigyaConfig) => ({config}),
             LOADED: (service: GigyaSdk) => ({service})
 
@@ -64,14 +65,14 @@ const gigyaLoadingMachine = gigyaModel.createMachine({
 
         loading: {
             entry: ['onLoading'],
-            after: {
-                // after 1 second, transition checker-service
-                500: {target: 'checking.check'}
+    
+            invoke: {
+                src: 'loader'
             },
 
             on: {
                 CHECK: {
-                    target: 'checking'
+                    target: 'checking.check'
                 },
                 LOADED: {
                     target: '#loaded',
@@ -96,7 +97,7 @@ const gigyaLoadingMachine = gigyaModel.createMachine({
                         src: "checker"
                     },
                     on: {
-                        CHECK: 'waiting',
+                        NOT_LOADED: 'waiting',
                         LOADED: {
                             target: '#loaded',
                             actions: [
@@ -126,10 +127,10 @@ const gigyaLoadingMachine = gigyaModel.createMachine({
         }),
         assignConfig: gigyaModel.assign({
             config: (_: any, ev: { config: GigyaConfig }) => ev.config // inferred
-        }),
-        onLoading: (ctx, event) => {
-            ctx.config && loadFromConfig(ctx.config);
-        }
+        })
+        // onLoading: (ctx, event) => {
+        //     ctx.config && loadFromConfig(ctx.config);
+        // }
     },
     services: {
         loader: ({config: GigyaConfig}, event) => (send) => {
@@ -141,7 +142,7 @@ const gigyaLoadingMachine = gigyaModel.createMachine({
             if (checkIfGigyaLoaded()) {
                 send({type: "LOADED", service: sdk(config)})
             } else {
-                send({type: "CHECK", wait: 500})
+                send({type: "NOT_LOADED", wait: 500})
 
             }
 

@@ -165,10 +165,10 @@ export function loadFromConfig(config) {
     window.config = config;
     // debugger;
     log("3. Load Gigya for api key: " + apiKey, "LOAD GIGYA FILE");
-    return loadScript(apiKey);
+    return loadScript(apiKey, config.domain);
 }
 
-function loadScript(apiKey) {
+function loadScript(apiKey, domain) {
     const existing = document.body.querySelector('#gigya-script');
 
     const script = document.createElement('script');
@@ -176,8 +176,9 @@ function loadScript(apiKey) {
     //   resolve(script);
     // }
 
+    const scriptDomain = domain || `cdns.gigya.com`;
     script.id = `gigya-script`;
-    script.src = `https://cdns.gigya.com/js/gigya.js?apikey=${apiKey}`;
+    script.src = `https://${scriptDomain}/js/gigya.js?apikey=${apiKey}`;
     script.async = true;
     document.body.appendChild(script);
 

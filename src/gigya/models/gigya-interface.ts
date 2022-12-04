@@ -4,6 +4,8 @@ export interface IBaseEvent {
     eventName: string;
     source: string;
     context: any;
+    errorCode: number;
+
 }
 
 export interface IBaseGlobalEvent extends IBaseEvent {
@@ -21,6 +23,7 @@ export interface ILoginEvent extends IBaseGlobalEvent {
     data: Data;
     remember: boolean;
     dataCenter?: string;
+    id_token: string;
 }
 
 export interface ILogoutEvent extends IBaseGlobalEvent {
@@ -37,7 +40,7 @@ export interface IErrorEvent extends IBaseScreenSetEvent {
     statusMessage: string;
     errorMessage: string;
     errorDetails: string;
-    errorCode: number;
+    errorCode: number ;
 }
 
 export interface IBeforeValidationEvent extends IBaseScreenSetEvent {

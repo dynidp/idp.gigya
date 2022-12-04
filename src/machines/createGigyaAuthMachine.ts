@@ -6,7 +6,7 @@ import {
     performSignup,
     socialLoginAsync,
     SocialLoginParams
-} from "../gigya/gigyaAuthMachine";
+} from "../gigya/gigyaWebSDK";
 import {omit} from "lodash/fp";
 import {AuthMachine, createAuthMachine} from "./authMachine";
 import gigyaWebSDK from "../gigya/gigyaWebSDK";
