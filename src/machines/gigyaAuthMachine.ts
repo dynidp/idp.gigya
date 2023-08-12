@@ -36,7 +36,6 @@ export const createGigyaAuthMachine = (config: { redirectTo: (uri: string) => vo
     })
         .withConfig({
             services: {
-                loader: (context, event) => loader,
 
                 performSignup: async (ctx, event) => {
                     const payload = omit("type", event);
@@ -122,7 +121,8 @@ export const createGigyaAuthMachine = (config: { redirectTo: (uri: string) => vo
                                 const loginMode =ctx.user? "reAuth" :  "standard"
         
                                 return await  socialLoginAsync({...payload, loginMode} as SocialLoginParams);
-                            }
+                                     loader: (context, event) => loader,
+       }
         
                         },
                     }
